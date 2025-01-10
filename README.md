@@ -1,73 +1,100 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
-
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+# Sentiment Analyzer
 
 ## Description
+Sentiment Analyzer is a NestJS application that integrates with MongoDB and Google Cloud's Natural Language API to analyze text sentiment.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+---
 
-## Installation
+## Prerequisites
+- [Docker](https://www.docker.com/) installed on your system
+- A valid Google Cloud API key for the Natural Language API
 
+---
+
+## Setup Instructions
+
+### 1. Clone the Repository
 ```bash
-$ npm install
+git clone <repository-url>
+cd sentiment-analyzer
 ```
 
-## Running the app
-
+### 2. Create a `.env` File
+Create a `.env` file based on the provided `.env-example` file:
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+cp .env-example .env
 ```
 
-## Test
+Update the `GOOGLE_API_KEY` in the `.env` file with your valid Google Cloud API key.
 
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+### 3. Update the `docker-compose.yml` File
+Add your `GOOGLE_API_KEY` to the environment section of the `app` service in `docker-compose.yml`:
+```yaml
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/AnalyzeSentiment
+      - GOOGLE_API_KEY=<your-google-api-key>
 ```
 
-## Support
+---
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## Build and Run the Application
 
-## Stay in touch
+### 1. Build the Docker Containers
+Run the following command to build the Docker containers:
+```bash
+docker-compose build
+```
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### 2. Start the Application
+Start the application and its dependencies:
+```bash
+docker-compose up
+```
+
+The NestJS application will be accessible on `http://localhost:4200`.
+
+The MongoDB database will be accessible on `localhost:28000`.
+
+---
+
+## Testing the Application
+### Access the Application
+- API Base URL: `http://localhost:4200`
+- SwaggerUI URL `http://localhost:4200/api`
+
+### Connect to MongoDB
+You can connect to the MongoDB database using tools like MongoDB Compass or the Mongo shell. Use the following connection details:
+- Host: `localhost`
+- Port: `28000`
+- Database: `AnalyzeSentiment`
+
+---
+
+## Development Notes
+### Build Commands
+- To build the application manually:
+```bash
+docker-compose exec app npm run build
+```
+
+### Running Tests
+- To run tests:
+```bash
+docker-compose exec app npm run test
+```
+
+---
+
+## Troubleshooting
+
+### Error: `MongooseServerSelectionError: connect ECONNREFUSED`
+Ensure that the `MONGO_URI` is correctly configured in both the `.env` file and the `docker-compose.yml` file. Use the service name `mongodb` instead of `localhost` in the `MONGO_URI`.
+
+### Error: `Google API Key Missing`
+Ensure you have updated the `.env` file with a valid `GOOGLE_API_KEY` and added it to the `docker-compose.yml` file.
+
+---
 
 ## License
+This project is licensed under the UNLICENSED license.
 
-Nest is [MIT licensed](LICENSE).
