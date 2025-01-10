@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nestjs-app
+    ports:
+      - "4200:3000"
+    depends_on:
+      - mongodb
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/AnalyzeSentiment
+      - GOOGLE_API_KEY=
+    volumes:
+      - .:/app
+      - /app/node_modules
+
+  mongodb:
+    image: mongo:6
+    container_name: mongodb
+    ports:
+      - "28000:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:

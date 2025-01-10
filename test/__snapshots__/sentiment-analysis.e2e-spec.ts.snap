@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SentimentAnalysisController (e2e) analyzeSentiment should return the sentiment analysis and save the result to the database 1`] = `
+{
+  "sentence": Any<String>,
+  "sentimentMagnitude": Any<Number>,
+  "sentimentScore": Any<Number>,
+}
+`;
+
+exports[`SentimentAnalysisController (e2e) listAnalyses should return an array on analysis 1`] = `
+{
+  "_id": Any<String>,
+  "createdAt": Any<String>,
+  "sentence": Any<String>,
+  "sentimentMagnitude": Any<Number>,
+  "sentimentScore": Any<Number>,
+}
+`;
